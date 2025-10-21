@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class PaymentConsumer {
     private final RabbitTemplate rabbitTemplate;
     private int attemptCount = 0;
+
     @RabbitListener(queues = RabbitMQConfig.REQUEST_QUEUE)
     public void consume(String paymentId) {
         System.out.println("🔔 Received payment: " + paymentId + " | attempt=" + attemptCount);
