@@ -1,9 +1,10 @@
-package uz.brb.rabbitMQ_demo;
+package uz.brb.rabbitMQ_demo.consumer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import uz.brb.rabbitMQ_demo.config.RabbitMQConfig;
 
 @Service
 @RequiredArgsConstructor

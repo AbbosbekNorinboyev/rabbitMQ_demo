@@ -1,4 +1,4 @@
-package uz.brb.rabbitMQ_demo;
+package uz.brb.rabbitMQ_demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uz.brb.rabbitMQ_demo.producer.MessageProducer;
+
+import static uz.brb.rabbitMQ_demo.config.RabbitMQConfig.REQUEST_QUEUE;
 
 @Service
 @RestController
@@ -24,6 +27,6 @@ public class MessageController {
     @GetMapping("/api/read-message")
     public String readMessage() {
         // Xabarni o‘qiydi va avtomatik queue’dan o‘chadi
-        return (String) rabbitTemplate.receiveAndConvert("demo-queue");
+        return (String) rabbitTemplate.receiveAndConvert(REQUEST_QUEUE);
     }
 }

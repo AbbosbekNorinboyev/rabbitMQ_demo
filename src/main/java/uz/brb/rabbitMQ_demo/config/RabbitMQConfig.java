@@ -1,4 +1,4 @@
-package uz.brb.rabbitMQ_demo;
+package uz.brb.rabbitMQ_demo.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
