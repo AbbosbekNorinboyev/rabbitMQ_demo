@@ -1,6 +1,8 @@
 package uz.brb.rabbitMQ_demo.consumer;
 
+import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ public class PaymentConsumer {
     private int attemptCount = 0;
 
     @RabbitListener(queues = RabbitMQConfig.REQUEST_QUEUE)
-    public void consume(String paymentId) {
+    public void consume(String paymentId, Channel channel, Message message) throws Exception {
         System.out.println("🔔 Received payment: " + paymentId + " | attempt=" + attemptCount);
 
         try {
@@ -26,6 +28,9 @@ public class PaymentConsumer {
 
             // Agar 3-urinishda ishlasa
             System.out.println("✅ Payment success: " + paymentId);
+
+            // Xabarni ack qilish
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());
@@ -46,6 +51,9 @@ public class PaymentConsumer {
                         RabbitMQConfig.DLQ, paymentId);
                 System.out.println("🚨 Sent to DLQ: " + paymentId);
             }
+
+            // Xatolik yuz bersa, xabarni ack qilamiz (yo‘qsa u qayta qaytariladi)
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
     }
 }
